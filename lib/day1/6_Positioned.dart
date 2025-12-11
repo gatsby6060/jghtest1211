@@ -14,18 +14,16 @@ class MyApp extends StatelessWidget {
         body: Stack(
           children: [
             Positioned(
-              top:50,
+              top: 50,
               left: 200,
               child: Container(
-                // padding: EdgeInsets.all(10),
                 color: Colors.blue,
-                width: 500, height: 100,
-                // width: double.infinity, height: 100,
+                width: 100, height: 100,
               ),
             )
           ],
         ),
-      )
+      ),
     );
   }
 }

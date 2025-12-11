@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 
 void main() {
@@ -22,8 +19,8 @@ class MyApp extends StatelessWidget {
             alignment: Alignment.topCenter,
             child: Container(
               child: Text("zzz"),
-              margin: EdgeInsets.fromLTRB(20, 50, 0, 0),
-              padding: EdgeInsets.all(20),
+              // margin: EdgeInsets.fromLTRB(20, 50, 0, 0),
+              padding : EdgeInsets.all(20),
               color: Colors.blue,
               width: double.infinity, height: 100,
             ),
@@ -33,6 +30,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-
