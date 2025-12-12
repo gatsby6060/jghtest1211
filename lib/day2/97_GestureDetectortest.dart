@@ -28,7 +28,10 @@ class _MyAppState extends State<MyApp> {
                 child: Center(
                   child: Text(
                       "클릭",
-                      style: TextStyle(color: isDark ? Colors.white : Colors.black),
+                      style: TextStyle(
+                          color: isDark ? Colors.white : Colors.black,
+
+                      ),
                   ),
 
                 ),

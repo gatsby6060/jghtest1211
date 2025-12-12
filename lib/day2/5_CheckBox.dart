@@ -21,10 +21,9 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       if(isChecked){
         checkedList.add(subject);
-      }else{
+      } else {
         checkedList.remove(subject);
       }
-
     });
   }
 
@@ -44,7 +43,7 @@ class _MyAppState extends State<MyApp> {
               ),
               onTap: (){
                 bool isChecked = checkedList.contains(imgList[0]);
-                listChanged(imgList[0], isChecked);
+                listChanged(imgList[0], !isChecked);
               },
             ),
             ListTile(
@@ -57,7 +56,7 @@ class _MyAppState extends State<MyApp> {
               ),
               onTap: (){
                 bool isChecked = checkedList.contains(imgList[1]);
-                listChanged(imgList[1], isChecked);
+                listChanged(imgList[1], !isChecked);
               },
             ),
             ListTile(
@@ -70,12 +69,25 @@ class _MyAppState extends State<MyApp> {
               ),
               onTap: (){
                 bool isChecked = checkedList.contains(imgList[2]);
-                listChanged(imgList[2], isChecked);
+                listChanged(imgList[2], !isChecked);
               },
             ),
+            Expanded(
+                child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10
+                    ),
+                    itemCount: checkedList.length,
+                    itemBuilder: (context, index){
+                      return Image.asset(checkedList[index]);
+                    }
+                )
+            )
           ],
-        )
-      )
+        ),
+      ),
     );
   }
 }
