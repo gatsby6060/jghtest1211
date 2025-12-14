@@ -17,8 +17,13 @@ class _MyAppState extends State<MyApp> {
   // ============================================
   // [1단계] 변수 선언 - 화면에서 사용할 데이터들
   // ============================================
-  TextEditingController _testtxtCtrl = TextEditingController();  // 텍스트 입력 필드 제어용
-  List<String> textList = [];  // 할일 목록을 저장하는 리스트
+  // [변수명 규칙]
+  // - _로 시작: private (이 클래스 안에서만 사용) - 예: _testtxtCtrl, _addTodo()
+  // - 소문자로 시작: public (다른 곳에서도 접근 가능) - 예: textList, listChanged()
+  // 보통 클래스 내부에서만 쓰는 변수/함수는 _를 붙여서 private로 만듭니다!
+  
+  TextEditingController _testtxtCtrl = TextEditingController();  // _로 시작 = private (이 클래스 안에서만 사용)
+  List<String> textList = [];  // 소문자로 시작 = public (다른 곳에서도 접근 가능, 하지만 여기서는 클래스 내부에서만 사용)
 
   // ============================================
   // [2단계] 함수 정의 - 버튼을 눌렀을 때 실행할 동작들
@@ -26,6 +31,7 @@ class _MyAppState extends State<MyApp> {
   // ============================================
   
   // 할일 추가 함수 - "추가!" 버튼을 누르면 이 함수가 실행됨
+  // _로 시작 = private 함수 (이 클래스 안에서만 사용)
   void _addTodo() {
     var inputtext = _testtxtCtrl.text;  // 입력 필드에서 텍스트 가져오기
     setState(() {  // 화면을 다시 그리기 위해 setState 사용
@@ -36,6 +42,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   // 할일 삭제 함수 - 삭제 버튼을 누르면 이 함수가 실행됨
+  // _로 시작 = private 함수 (이 클래스 안에서만 사용)
   void _deleteTodo(int index) {
     setState(() {  // 화면을 다시 그리기 위해 setState 사용
       textList.remove(textList[index]);  // 리스트에서 해당 항목 제거
