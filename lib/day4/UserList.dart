@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'UserEdit.dart';
 
-
-// void main() {
-//   runApp(const UserList());
-// }
-
 class UserList extends StatefulWidget {
   const UserList({super.key});
 
@@ -28,10 +23,7 @@ class _UserListState extends State<UserList> {
 
   @override
   Widget build(BuildContext context) {
-    return
-      // MaterialApp(
-      //   home:
-         Scaffold(
+    return Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.grey[50],
               title: const Text("사용자목록"),
@@ -49,48 +41,25 @@ class _UserListState extends State<UserList> {
                       itemBuilder: (context, index) {  // 각 항목을 어떻게 그릴지 정의
                         Map item = list[index];  // 현재 항목의 Map 가져오기
 
-                        return ListTile(  // 리스트의 한 줄
-                          // title: Text(" 아이디 : ${item["id"]} , 이름 : ${item["name"]} "
-                          //     + "\n 나이 : ${item["age"]} "  ),
-
+                        return ListTile(
                           title: Text.rich(
                             TextSpan(
                               children: [
                                 TextSpan(
                                   text: "아이디 : ${item["userId"]} , 이름 : ${item["name"]}\n",
                                   style: const TextStyle(
-                                    fontWeight: FontWeight.bold, //  굵게
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 TextSpan(
                                   text: "나이 : ${item["age"]}",
                                   style: const TextStyle(
-                                    fontSize: 14, //  작게
-                                    // color: Colors.grey,
+                                    fontSize: 14,
                                   ),
                                 ),
                               ],
                             ),
                           ),
-
-
-                          // trailing: IconButton(  // 오른쪽에 삭제 버튼
-                          //     onPressed: () {  // 삭제 버튼을 누르면 실행
-                          //       setState(() {  // 화면을 다시 그리기 위해 setState 사용
-                          //         // list.removeAt(index);  // 리스트에서 해당 인덱스의 항목 제거
-                          //         Fluttertoast.showToast(
-                          //             msg: "삭제예정",
-                          //             toastLength: Toast.LENGTH_LONG ,
-                          //             gravity: ToastGravity.BOTTOM,
-                          //             timeInSecForIosWeb: 1,
-                          //             backgroundColor: Colors.grey[200],
-                          //             textColor: Colors.black,
-                          //             fontSize: 16.0
-                          //         );
-                          //       });
-                          //     },
-                          //     icon: Icon(Icons.delete)  // 삭제 아이콘
-                          // ),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min, // 중요! 안 넣으면 화면에 사용자 데이터가 안보임...
                             children: [
@@ -99,12 +68,11 @@ class _UserListState extends State<UserList> {
                                 onPressed: () {
                                   Fluttertoast.showToast(msg: "편집");
                                   Navigator.of(context).push(
-                                    MaterialPageRoute(builder: (_) =>
-                                            UserEdit(
-                                                // msg : "A에서 넘긴 값",
-                                              name : item["name"],
-                                              age : item[age]
-                                            )
+                                    MaterialPageRoute(
+                                      builder: (_) => UserEdit(
+                                        name: item["name"],
+                                        age: item[age],
+                                      ),
                                     ),
                                   );
                                 },
@@ -117,15 +85,12 @@ class _UserListState extends State<UserList> {
                               ),
                             ],
                           ),
-                        // );
                         );
                       },
-                    )
-
-                )
-            ]
-            )
+                    ),
+                ),
+            ],
+            ),
         );
-    // );
   }
 }

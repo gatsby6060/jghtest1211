@@ -20,6 +20,21 @@ class _UserEditState extends State<UserEdit> {
   TextEditingController txtNameCtrl = TextEditingController();  // 텍스트 입력 필드 제어용
   TextEditingController txtAgeCtrl = TextEditingController();
 
+  // initState: 화면이 처음 생성될 때 한 번만 실행되는 함수
+  // day3의 BPage처럼 widget.name, widget.age로 전달받은 값을 TextField에 넣어줍니다!
+  @override
+  void initState() {
+    super.initState();
+    // 전달받은 name 값을 TextField에 표시
+    if (widget.name != null) {
+      txtNameCtrl.text = widget.name!;
+    }
+    // 전달받은 age 값을 TextField에 표시 (int를 String으로 변환)
+    if (widget.age != null) {
+      txtAgeCtrl.text = widget.age.toString();
+    }
+  }
+
   void addToUser(){
     Fluttertoast.showToast(
       msg: "버튼눌렸습니다.",

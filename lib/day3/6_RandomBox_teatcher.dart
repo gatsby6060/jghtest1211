@@ -23,31 +23,22 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final Random _ran = Random();
-
-  late List<Widget> list = [
-
-  ];
-
-
+  List<Widget> list = [];
+  int currentIdx = 0;
   void _createBox(){
-    // Fluttertoast.showToast(
-    //     msg: "눌리긴 한듯1...",
-    // );
     List<Widget> tempList = [];
-    // int j = 1;
-
     for(int i=1; i<=10; i++){
       tempList.add(
           Positioned(
-              left: _ran.nextDouble()* (MediaQuery.of(context).size.width - 50) ,
-              top: _ran.nextDouble()* (MediaQuery.of(context).size.height - 100) ,
+              left : _ran.nextDouble() * (MediaQuery.of(context).size.width - 50),
+              top : _ran.nextDouble() * (MediaQuery.of(context).size.height - 100),
               child: GestureDetector(
-                onTap:()=>_removeBoxTeacher(i-1),
+                onTap: () => _removeBox(i-1),
                 child: Container(
                   child: Center(
                     child: Text("$i"),
                   ),
-                  width: 50, height: 50, color: Colors.blue[200],
+                  width: 30, height: 30, color: Colors.blue[200],
                 ),
               )
           )
@@ -55,28 +46,19 @@ class _MyAppState extends State<MyApp> {
     }
     setState(() {
       list = tempList;
-      // print(list);
     });
   }
 
-  // void _removeBox(){
-  //   Fluttertoast.showToast(msg: "눌리긴 한듯");
-  //   setState(() {
-  //     list.remove(list[0]);
-  //   });
-  // }
-  int currentIdx = 0;
-  void _removeBoxTeacher(int index){
+  void _removeBox(int index){
     if(index == currentIdx){
       currentIdx++;
-      Fluttertoast.showToast(msg: "눌리긴 한듯");
       setState(() {
         list.removeAt(0);
       });
-      if(list.length == 0){
-        currentIdx = 0;
-        _createBox();
-      }
+    }
+    if(list.length == 0){
+      currentIdx = 0;
+      _createBox();
     }
 
   }
@@ -84,28 +66,26 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Scaffold(
-            body: Column(
-              children: [
-
-                Expanded(
+      home: Scaffold(
+          body : Column(
+            children: [
+              Expanded(
                   child: Stack(
                     children: list,
-                  ),
-                ),
-
-                Container(
-                  height: 50, color: Colors.green[100],
+                  )
+              ),
+              Container(
+                height: 50, color: Colors.green[100],
+                child: Center(
                   child: ElevatedButton(
-                    onPressed: _createBox,
-                    child: Text("박스 생성"),
+                      onPressed: _createBox,
+                      child: Text("박스 생성!")
                   ),
                 ),
-              ],
-
-
-            )
-        )
+              )
+            ],
+          )
+      ),
     );
   }
 }
