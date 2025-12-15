@@ -11,8 +11,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: SnackBarEx(),
-      )
+          body : SnackBarEx()
+      ),
     );
   }
 }
@@ -29,21 +29,19 @@ class _SnackBarExState extends State<SnackBarEx> {
   Widget build(BuildContext context) {
     return Center(
       child: ElevatedButton(
-          onPressed: (){
+          onPressed: () {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                  content: Text("안녕?ㅋㅋㅋㅋ"),
+                SnackBar(
+                  content: Text("안녕? ㅎㅎㅎㅎㅎㅎㅎ"),
                   action: SnackBarAction(
                       label: "닫기",
                       onPressed: (){}
                   ),
                   duration: Duration(seconds: 3),
-              )
+                )
             );
-          },
-          child: Text("클릭!!!!")
+          }, child: Text("클릭!")
       ),
     );
   }
 }
-
