@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'UserEdit.dart';
+import 'db.dart';
+import 'UserView.dart';
 
 class UserList extends StatefulWidget {
   const UserList({super.key});
@@ -9,88 +10,88 @@ class UserList extends StatefulWidget {
   State<UserList> createState() => _UserListState();
 }
 
-
-const String age = "age";
 class _UserListState extends State<UserList> {
+  List<Map<String, dynamic>> list = [];
 
+  Future<void> _selectUserList() async{
+    var userList = await DB.selectUser();
+    setState(() {
+      list = userList;
+    });
+  }
 
-  List<Map<String, Object>> list = [
-    {"userId" : "hong", "name" : "홍길동", age : 30},
-    {"userId" : "kim", "name" : "김철수", age : 25},
-    {"userId" : "park", "name" : "박영희", age : 20}
-  ];
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _selectUserList();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.grey[50],
-              title: const Text("사용자목록"),
+        appBar: AppBar(title : Text("사용자 목록")),
+        body : ListView.builder(
+          itemCount: list.length,
+          itemBuilder: (context, index) {
+            var user = list[index];
+            return ListTile(
 
-            ),
+              onTap: () async {
+                bool flg = await Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => UserView(userId: user["userId"]),));
+              },
 
-            body : Column(  // 세로로 위젯들을 나열
+              title : Text("아이디 : ${user["userId"]}, 이름 : ${user["name"]}"),
+              subtitle: Text("나이 : ${user["age"]}"),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                Expanded(  // 남은 공간을 모두 차지하도록
-                    child: list.isEmpty  // 리스트가 비어있는지 확인
-                        ? Center(child: Text("입력 사람 없음"),)  // 비어있으면 "할 일 없음" 표시
-
-                        : ListView.builder(  // 리스트를 동적으로 생성
-                      itemCount: list.length,  // 리스트 항목 개수
-                      itemBuilder: (context, index) {  // 각 항목을 어떻게 그릴지 정의
-                        Map item = list[index];  // 현재 항목의 Map 가져오기
-
-                        return ListTile(
-                          title: Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: "아이디 : ${item["userId"]} , 이름 : ${item["name"]}\n",
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                  IconButton(
+                      onPressed: () async {
+                        bool flg = await Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => UserEdit(userId: user["userId"]),));
+                        if(flg){
+                          _selectUserList();
+                        }
+                      },
+                      icon: Icon(Icons.edit)
+                  ),
+                  IconButton(
+                      onPressed: (){
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title : Text("삭제"),
+                              content: Text("${user["name"]}님을 정말 삭제 하실거?"),
+                              actions: [
+                                TextButton(
+                                    onPressed: () async {
+                                      await DB.deleteUser(user["userId"]);
+                                      Navigator.of(context).pop();
+                                      _selectUserList();
+                                    },
+                                    child: Text("삭제")
                                 ),
-                                TextSpan(
-                                  text: "나이 : ${item["age"]}",
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                ),
+                                TextButton(
+                                    onPressed: (){
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text("취소")
+                                )
                               ],
-                            ),
-                          ),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min, // 중요! 안 넣으면 화면에 사용자 데이터가 안보임...
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.edit),
-                                onPressed: () {
-                                  Fluttertoast.showToast(msg: "편집");
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (_) => UserEdit(
-                                        name: item["name"],
-                                        age: item[age],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () {
-                                  Fluttertoast.showToast(msg: "삭제");
-                                },
-                              ),
-                            ],
-                          ),
+                            );
+                          },
                         );
                       },
-                    ),
-                ),
-            ],
-            ),
-        );
+                      icon: Icon(Icons.delete)
+                  )
+                ],
+              ),
+            );
+          },
+        )
+    );
   }
 }

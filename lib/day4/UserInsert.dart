@@ -1,81 +1,79 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'UserList.dart';
+import 'db.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(UserInsert());
 
-// ✅ MaterialApp은 최상단에 딱 1번
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class UserInsert extends StatelessWidget {
+  const UserInsert({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: UserInsert(),
+    return MaterialApp(
+        home : UserInsertExam()
     );
   }
 }
 
-class UserInsert extends StatefulWidget {
-  const UserInsert({super.key});
+class UserInsertExam extends StatefulWidget {
+  const UserInsertExam({super.key});
 
   @override
-  State<UserInsert> createState() => _UserInsertState();
+  State<UserInsertExam> createState() => _UserInsertExamState();
 }
 
-class _UserInsertState extends State<UserInsert> {
-  final TextEditingController txtNameCtrl = TextEditingController();
-  final TextEditingController txtAgeCtrl = TextEditingController();
-
-  void addToUser() {
-    Fluttertoast.showToast(msg: "버튼눌렸습니다.");
-    setState(() {});
-  }
-
+class _UserInsertExamState extends State<UserInsertExam> {
+  TextEditingController nameCtrl = TextEditingController();
+  TextEditingController ageCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.grey[50],
-        title: const Text("sqlite 실습"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.list),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const UserList()),
-              );
-            },
-          )
-        ],
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: TextField(
-              controller: txtNameCtrl,
-              decoration: const InputDecoration(labelText: "Name"),
-            ),
+        appBar: AppBar(
+          title : Text("sqflite 실습"),
+          actions: [
+            IconButton(
+                onPressed: (){
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => UserList(),));
+                },
+                icon: Icon(Icons.list)
+            )
+          ],
+        ),
+        body : Padding(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            children: [
+              TextField(
+                controller: nameCtrl,
+                decoration: InputDecoration(
+                    labelText: "Name"
+                ),
+              ),
+              TextField(
+                controller: ageCtrl,
+                decoration: InputDecoration(
+                    labelText: "Age"
+                ),
+              ),
+              SizedBox(height: 20,),
+              ElevatedButton(
+                  onPressed: () async {
+                    String name = nameCtrl.text;
+                    int age = int.tryParse(ageCtrl.text) ?? 0;
+                    await DB.insertUser(name, age);
+
+                    nameCtrl.clear();
+                    ageCtrl.clear();
+
+                  },
+                  child: Text("사용자 추가")
+              )
+            ],
           ),
-          const SizedBox(height: 12),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: TextField(
-              controller: txtAgeCtrl,
-              decoration: const InputDecoration(labelText: "Age"),
-              keyboardType: TextInputType.number,
-            ),
-          ),
-          ElevatedButton(
-            onPressed: addToUser,
-            child: const Text("사용자 추가"),
-          ),
-        ],
-      ),
+        )
+
     );
   }
 }
